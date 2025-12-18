@@ -119,3 +119,5 @@ MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
 STATIC_URL = 'static/'
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'home_page'

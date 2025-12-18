@@ -63,6 +63,17 @@
         }
         .btn-logout:hover { background-color: #a71d2a; }
 
+        .btn-update, .btn-change-password {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 25px;
+            border-radius: 6px;
+            border: none;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn-update:hover, .btn-change-password:hover { background-color: #1e7e34; }
+
         .buttons {
             display: flex;
             justify-content: center;
@@ -81,12 +92,16 @@
         {% endif %}
 
         <h2>{{ user.username }}</h2>
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
         <p><strong>Address:</strong> {{ user.address }}</p>
 
         <div class="buttons">
             <a href="{% url 'myapp:home_page' %}" class="btn-home">Bosh sahifa</a>
-            <form method="get" action="{% url 'logout' %}">
+            <a href="{% url 'users:profile_update' %}" class="btn-update">Profilni yangilash</a>
+            <a href="{% url 'users:change-pass' %}" class="btn-change-password">Parolni o'zgartirish</a>
+            <form method="get" action="{% url 'users:logout' %}">
                 <button type="submit" class="btn-logout">Chiqish</button>
             </form>
         </div>

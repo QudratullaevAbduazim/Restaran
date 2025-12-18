@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profilni yangilash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .profile-card {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+        }
+        .profile-card h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: block;
+            border: 3px solid #007BFF;
+        }
+        .form-control, .form-select {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .form-error {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-card">
+        <h2>Profilni yangilash</h2>
+        <!-- Foydalanuvchi rasmini ko'rsatish -->
+        {% if user.profile.image %}
+            <img src="{{ user.profile.image.url }}" alt="Profil rasmi" class="profile-img">
+        {% else %}
+            <img src="https://via.placeholder.com/120" alt="Profil rasmi" class="profile-img">
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="form-error">
+                            {% for error in field.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Saqlash</button>
+        </form>
+    </div>
+</body>
+</html>
