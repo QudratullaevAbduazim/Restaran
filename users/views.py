@@ -2,11 +2,17 @@ from django.contrib.auth import login, logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.views import View
+
+from myapp.models import Food
 from .forms import CustomUserCreationForm, ProfileUpdateForm  # UserForm emas, biz yozgandek
 from django.contrib.auth import update_session_auth_hash
+
+from .models import Comment
+
+
 class RegisterView(View):
     def get(self, request):
         form = CustomUserCreationForm()
@@ -21,10 +27,31 @@ class RegisterView(View):
         return render(request, 'users/register.html', {'form': form})
 
 
-class ProfileView(View):
-    def get(self, request):
-        user = request.user
-        return render(request, 'users/profile.html', {'user': user})
+
+def add_comment(request, food_id):
+    if request.method == 'POST':
+        food = get_object_or_404(Food, id=food_id)
+        Comment.objects.create(
+            food=food,
+            user=request.user,
+            text=request.POST.get('text')
+        )
+    return redirect('users:profile')
+
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+    if request.method == 'POST':
+        comment.text = request.POST.get('text')
+        comment.save()
+        return redirect('users:profile')
+    return render(request, 'users/edit_comment.html', {'comment': comment})
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+    comment.delete()
+    return redirect('users:profile')
 
 
 class LogoutView(View):
@@ -72,4 +99,13 @@ class ProfileUpdateView(LoginRequiredMixin, View):
         return render(request, 'users/profile_update.html', {'form': form})
 
 
-
+@login_required
+def profile_view(request):
+    user = request.user
+    comments = Comment.objects.filter(user=user)
+    foods = Food.objects.filter(user=user)
+    return render(request, 'users/profile.html', {
+        'user': user,
+        'comments': comments,
+        'foods': foods
+    })
