@@ -30,8 +30,8 @@ class RegisterView(View):
 
 
 class DeleteCommentView(LoginRequiredMixin, View):
-    def get(self, request, comment_id):
-        comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+    def get(self, request, pk):
+        comment = get_object_or_404(Comment, id=pk, user=request.user)
         comment.delete()
         return redirect('myapp:home_page')
 
