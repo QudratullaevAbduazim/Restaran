@@ -3,7 +3,7 @@ from .models import Food
 class FoodForm(forms.ModelForm):
     class Meta:
         model = Food
-        fields = '__all__'
+        fields = ['name', 'price', 'desc', 'image']
     def clean_price(self):
         price = self.cleaned_data.get('price')
         if price and price < 0:

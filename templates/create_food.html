@@ -1,341 +1,254 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Create — Rustaq Restaurant</title>
+    <title>Yangi taom qo'shish | Rustaq Restaurant</title>
 
-    <!-- Google Fonts (optional) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
         :root{
             --accent: #c0392b;
-            --accent-strong: #9b2b23;
+            --accent-light: #fdf2f1;
             --muted: #6f6f6f;
-            --bg: #faf7f6;
+            --bg: #f8f9fa;
             --card: #ffffff;
-            --radius: 12px;
-            --shadow: 0 10px 30px rgba(20,20,20,0.06);
-            --max-width: 900px;
+            --radius: 16px;
+            --shadow: 0 10px 40px rgba(0,0,0,0.08);
         }
-        *{box-sizing:border-box}
+
         body{
             margin:0;
-            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            background: linear-gradient(180deg,#fff,#fbf7f6);
-            color:#222;
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-            line-height:1.45;
-            padding:24px;
+            font-family: "Inter", sans-serif;
+            background-color: var(--bg);
+            color:#2d3436;
+            padding: 20px;
         }
 
         .container{
-            max-width:var(--max-width);
-            margin:18px auto;
-            background:var(--card);
-            border-radius:var(--radius);
-            box-shadow:var(--shadow);
-            overflow:hidden;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
+        /* Header */
         header.app-header{
-            background: linear-gradient(120deg, rgba(192,57,43,0.95), rgba(236,112,99,0.95));
-            color:white;
-            padding:20px 24px;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:16px;
-        }
-        .brand{
-            display:flex;
-            align-items:center;
-            gap:12px;
-        }
-        .logo{
-            width:56px;
-            height:56px;
-            border-radius:10px;
-            background:rgba(255,255,255,0.12);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-family:"Playfair Display", serif;
-            font-size:22px;
-        }
-        .brand h1{margin:0;font-size:18px;font-family:"Playfair Display",serif}
-        .brand p{margin:0;font-size:12px;opacity:0.95}
-
-        .header-actions a{
-            text-decoration:none;
-            color:var(--accent);
-            background:white;
-            padding:10px 14px;
-            border-radius:10px;
-            font-weight:600;
-            box-shadow:0 8px 20px rgba(0,0,0,0.06);
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            padding: 30px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .main{
-            padding:28px;
+        .brand h1 { margin: 0; font-family: "Playfair Display", serif; font-size: 24px; }
+        .brand p { margin: 5px 0 0; opacity: 0.8; font-size: 14px; }
+
+        /* Main Form Area */
+        .form-container {
+            background: var(--card);
+            padding: 40px;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow);
         }
 
-        .page-title{
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:12px;
-            margin-bottom:18px;
-        }
-        .page-title h2{margin:0;font-family:"Playfair Display",serif}
-        .page-title .sub{color:var(--muted); font-size:14px}
-
-        form.form-grid{
-            display:grid;
-            grid-template-columns: 1fr 360px;
-            gap:20px;
-            align-items:start;
-        }
-        @media (max-width:980px){
-            form.form-grid{grid-template-columns:1fr}
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
         }
 
-        .card{
-            background:var(--card);
-            border-radius:12px;
-            padding:18px;
-            box-shadow:0 6px 18px rgba(20,20,20,0.04);
+        @media (max-width: 850px) {
+            .grid-layout { grid-template-columns: 1fr; }
         }
 
-        .field{margin-bottom:14px; display:flex; flex-direction:column; gap:8px}
-        label{font-weight:600; font-size:14px}
-        input[type="text"], input[type="number"], textarea, select {
-            padding:10px 12px;
-            border:1px solid #e6e2e0;
-            border-radius:8px;
-            font-size:14px;
-            background:#fff;
-        }
-        textarea{min-height:120px; resize:vertical}
-
-        .inline-row{display:flex; gap:12px}
-        .inline-row .small{flex:1; min-width:0}
-
-        .help{font-size:13px;color:var(--muted)}
-
-        .form-actions{
-            display:flex;
-            gap:12px;
-            margin-top:8px;
-            align-items:center;
-        }
-        .btn{
-            padding:10px 14px;
-            border-radius:10px;
-            text-decoration:none;
-            font-weight:700;
-            border:0;
-            cursor:pointer;
-        }
-        .btn-primary{
-            background:var(--accent);
-            color:white;
-            box-shadow:0 8px 20px rgba(192,57,43,0.12);
-        }
-        .btn-cancel{
-            background:transparent;
-            color:var(--muted);
-            border:1px solid #eee;
+        /* Input Styles */
+        .field-group { margin-bottom: 25px; }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+            font-size: 14px;
         }
 
-        /* image preview */
-        .image-preview{
-            border-radius:10px;
-            overflow:hidden;
-            background:linear-gradient(180deg,#f6f3f2,#efe9e7);
-            height:240px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            position:relative;
-        }
-        .image-preview img{
-            width:100%;
-            height:100%;
-            object-fit:cover;
-            display:block;
-        }
-        .image-placeholder{
-            color:#bba8a6;
-            text-align:center;
-            padding:18px;
-            font-size:14px;
+        /* Djangodan keladigan inputlarga stil berish */
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #edf2f7;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            box-sizing: border-box;
         }
 
-        .errors{
-            background:#fff6f6;
-            border:1px solid rgba(192,57,43,0.08);
-            color:var(--accent-strong);
-            padding:10px 12px;
-            border-radius:8px;
-            margin-bottom:12px;
-            font-size:14px;
+        input:focus, textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 0 4px var(--accent-light);
         }
 
-        footer.form-footer{
-            margin-top:18px;
-            color:var(--muted);
-            font-size:13px;
+        /* Price Input Special */
+        .price-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
+        .price-wrapper input { padding-right: 60px; font-weight: bold; color: var(--accent); }
+        .price-wrapper::after {
+            content: "so'm";
+            position: absolute;
+            right: 15px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* Image Preview Area */
+        .upload-section {
+            border: 2px dashed #cbd5e0;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            background: #fcfcfc;
+        }
+
+        .preview-box {
+            width: 100%;
+            height: 250px;
+            background: #f1f3f5;
+            border-radius: 12px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+        }
+
+        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Buttons */
+        .actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+            border: none;
+            font-size: 15px;
+        }
+
+        .btn-save { background: var(--accent); color: white; }
+        .btn-save:hover { background: #a93226; transform: translateY(-2px); }
+        .btn-cancel { background: #f1f3f5; color: #495057; }
+
+        .error-msg { color: var(--accent); font-size: 12px; margin-top: 5px; font-weight: 500; }
     </style>
 </head>
 <body>
-    <div class="container" role="main">
-        <header class="app-header" role="banner" aria-label="Header">
-            <div class="brand">
-                <div class="logo" aria-hidden="true">R</div>
-                <div>
-                    <h1>Rustaq Restaurant</h1>
-                    <p>New menu entry</p>
-                </div>
-            </div>
 
-            <div class="header-actions">
-                <a href="{% url 'myapp:home_page' %}">Back to Menu</a>
-            </div>
-        </header>
-
-        <div class="main">
-            <div class="page-title">
-                <div>
-                    <h2>Create New Food</h2>
-                    <div class="sub">Add a new dish to your menu. Fill required fields and upload an image.</div>
-                </div>
-            </div>
-
-            <form method="POST" enctype="multipart/form-data" class="form-grid" novalidate>
-                {% csrf_token %}
-
-                <div class="card" aria-label="Food form">
-                    {% if form.non_field_errors %}
-                        <div class="errors">
-                            {{ form.non_field_errors }}
-                        </div>
-                    {% endif %}
-
-                    <div class="field">
-                        <label for="{{ form.name.id_for_label }}">Name</label>
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                            <div class="errors">{{ form.name.errors }}</div>
-                        {% endif %}
-                    </div>
-
-                    <div class="inline-row">
-                        <div class="field small">
-                            <label for="{{ form.price.id_for_label }}">Price</label>
-                            {{ form.price }}
-                            {% if form.price.errors %}
-                                <div class="errors">{{ form.price.errors }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="field small">
-                            <label for="{{ form.category.id_for_label }}">Category</label>
-                            {{ form.category }}
-                            {% if form.category.errors %}
-                                <div class="errors">{{ form.category.errors }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label for="{{ form.desc.id_for_label }}">Description</label>
-                        {{ form.desc }}
-                        {% if form.desc.errors %}
-                            <div class="errors">{{ form.desc.errors }}</div>
-                        {% endif %}
-                        <div class="help">Keep descriptions short and appetizing (max 300 characters).</div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <a class="btn btn-cancel" href="{% url 'myapp:home_page' %}">Cancel</a>
-                    </div>
-
-                    <footer class="form-footer">
-                        Tip: good photos increase orders. Recommended image size 1200×800 px.
-                    </footer>
-                </div>
-
-                <aside class="card" aria-label="Image upload & preview">
-                    <div style="display:flex;flex-direction:column;gap:12px;">
-                        <div>
-                            <label for="{{ form.image.id_for_label }}">Image</label>
-                            {{ form.image }}
-                            {% if form.image.errors %}
-                                <div class="errors">{{ form.image.errors }}</div>
-                            {% endif %}
-                            <div class="help">Upload a high-quality photo of the dish.</div>
-                        </div>
-
-                        <div class="image-preview" id="preview">
-                            {% if form.instance and form.instance.image %}
-                                <img id="preview-img" src="{{ form.instance.image.url }}" alt="Current image preview">
-                            {% else %}
-                                <div class="image-placeholder" id="preview-placeholder">No image selected</div>
-                            {% endif %}
-                        </div>
-
-                        {% if form.available %}
-                            <div class="field">
-                                <label for="{{ form.available.id_for_label }}">Available</label>
-                                {{ form.available }}
-                            </div>
-                        {% endif %}
-                    </div>
-                </aside>
-            </form>
+<div class="container">
+    <header class="app-header">
+        <div class="brand">
+            <h1><i class="bi bi-plus-circle"></i> Yangi Taom</h1>
+            <p>Menyuga yangi lazzat qo'shing</p>
         </div>
+        <a href="{% url 'myapp:home_page' %}" style="color: white; text-decoration: none; font-size: 14px;">
+            <i class="bi bi-arrow-left"></i> Orqaga qaytish
+        </a>
+    </header>
+
+    <div class="form-container">
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <div class="grid-layout">
+                <div class="form-main">
+                    <div class="field-group">
+                        <label>Taom nomi</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}<div class="error-msg">{{ form.name.errors.0 }}</div>{% endif %}
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="field-group">
+                            <label>Narxi</label>
+                            <div class="price-wrapper">
+                                {{ form.price }}
+                            </div>
+                            {% if form.price.errors %}<div class="error-msg">{{ form.price.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="field-group">
+                            <label>Kategoriya</label>
+                            {{ form.category }}
+                            {% if form.category.errors %}<div class="error-msg">{{ form.category.errors.0 }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Taom haqida batafsil (Desc)</label>
+                        {{ form.desc }}
+                        {% if form.desc.errors %}<div class="error-msg">{{ form.desc.errors.0 }}</div>{% endif %}
+                        <small style="color: #999;">Mijozlarni jalb qiladigan qisqa va mazali tavsif yozing.</small>
+                    </div>
+                </div>
+
+                <div class="form-side">
+                    <div class="upload-section">
+                        <label><i class="bi bi-image"></i> Taom rasmi</label>
+                        <div style="margin: 10px 0;">
+                            {{ form.image }}
+                        </div>
+                        {% if form.image.errors %}<div class="error-msg">{{ form.image.errors.0 }}</div>{% endif %}
+
+                        <div class="preview-box" id="imagePreview">
+                            <span id="placeholderText">Rasm tanlanmagan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-save">Saqlash va Menyuga qo'shish</button>
+                <a href="{% url 'myapp:home_page' %}" class="btn btn-cancel">Bekor qilish</a>
+            </div>
+        </form>
     </div>
+</div>
 
-    <script>
-        // Image preview for image file input (works with modern browsers)
-        (function(){
-            const fileInput = document.querySelector('input[type="file"][name$="image"], input[type="file"][name="image"]');
-            if (!fileInput) return;
+<script>
+    // Rasm yuklanganda uni preview qilish uchun JS
+    document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const previewBox = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('placeholderText');
 
-            const preview = document.getElementById('preview');
-            const previewImg = document.getElementById('preview-img');
-            const placeholder = document.getElementById('preview-placeholder');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                previewBox.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 
-            fileInput.addEventListener('change', function (e) {
-                const file = this.files && this.files[0];
-                if (!file) {
-                    if (previewImg) { previewImg.remove(); }
-                    if (placeholder) placeholder.style.display = 'block';
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function (ev) {
-                    if (placeholder) placeholder.style.display = 'none';
-                    if (previewImg) {
-                        previewImg.src = ev.target.result;
-                    } else {
-                        const img = document.createElement('img');
-                        img.id = 'preview-img';
-                        img.alt = 'Selected image preview';
-                        img.src = ev.target.result;
-                        preview.innerHTML = '';
-                        preview.appendChild(img);
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-        })();
-    </script>
 </body>
 </html>

@@ -28,30 +28,29 @@ class RegisterView(View):
 
 
 
-def add_comment(request, food_id):
-    if request.method == 'POST':
-        food = get_object_or_404(Food, id=food_id)
-        Comment.objects.create(
-            food=food,
-            user=request.user,
-            text=request.POST.get('text')
-        )
-    return redirect('users:profile')
 
-def edit_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
-    if request.method == 'POST':
-        comment.text = request.POST.get('text')
-        comment.save()
-        return redirect('users:profile')
-    return render(request, 'users/edit_comment.html', {'comment': comment})
+class DeleteCommentView(LoginRequiredMixin, View):
+    def get(self, request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+        comment.delete()
+        return redirect('myapp:home_page')
 
 
-@login_required
-def delete_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
-    comment.delete()
-    return redirect('users:profile')
+class CommentUpdateView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        comment = get_object_or_404(Comment, id=pk, user=request.user)
+        return render(request, 'users/update_comment.html', {'comment': comment})
+
+    def post(self, request, pk):
+        comment = get_object_or_404(Comment, id=pk, user=request.user)
+        new_text = request.POST.get('text')
+
+        if new_text:
+            comment.text = new_text
+            comment.save()
+            return redirect('myapp:home_page')
+
+        return render(request, 'users/update_comment.html', {'comment': comment})
 
 
 class LogoutView(View):
@@ -99,13 +98,13 @@ class ProfileUpdateView(LoginRequiredMixin, View):
         return render(request, 'users/profile_update.html', {'form': form})
 
 
-@login_required
 def profile_view(request):
     user = request.user
-    comments = Comment.objects.filter(user=user)
-    foods = Food.objects.filter(user=user)
+    my_comments = Comment.objects.filter(user=user).order_by('-id')
+    my_foods = Food.objects.filter(user=user).order_by('-id')
     return render(request, 'users/profile.html', {
         'user': user,
-        'comments': comments,
-        'foods': foods
+        'my_comments': my_comments,
+        'my_foods': my_foods
     })
+
